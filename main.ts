@@ -1,4 +1,4 @@
-import { createdUser, userExiste, newDados, login } from './users.ts';
+import { createdUser, userExiste, newDados, login, saldo, dadosPessoais, transferirDinheiro } from './users.ts';
 import dg from './biblioteca/digitacao.ts'
 
 let dgValor = "";
@@ -21,12 +21,11 @@ while (true) {
             if (usuarioLogado) {
                 loggedIn = usuarioLogado;
                 console.log(`Seja Bem Vindo Senhor ${loggedIn}`);
-                getLoggedInUser(loggedIn)
-                break;
+                await getLoggedInUser(loggedIn)
             } else {
-               console.log("Email ou senha incorretos, tente novamente")
-               await dg("Pressione ENTER para tentar novamente...")
-               dgValor = "1";
+                console.log("Email ou senha incorretos, tente novamente")
+                await dg("Pressione ENTER para tentar novamente...")
+                dgValor = "1";
             }
 
 
@@ -51,7 +50,7 @@ while (true) {
 
                 const cpf = await dg("Digite seu CPF")
 
-                const accountBalance = await dg("Digite quanto de dinheiro voce tem:\n")
+                const accountBalance = Number(await dg("Digite quanto de dinheiro voce tem:\n"))
 
                 const dateOfBirth = await dg("Digite sua data de nascimento:\n ")
                 newDados(email, name, cpf, accountBalance, dateOfBirth)
@@ -80,10 +79,39 @@ while (true) {
 
 };
 
-function getLoggedInUser(loggedIn: string) {
-console.log("BANCO CENTRAL - USUARIO LOGADO: " + loggedIn);
-const pergunta = dg("\n 1- Consultar Saldo \n 2-Transferir dinheiro \n 3- Consultar dados Pessoais \n 4- Sair da conta")
+async function getLoggedInUser(loggedIn: string) {
+    while(true){
+    console.log("BANCO CENTRAL - USUARIO LOGADO: " + loggedIn);
+    const pergunta = await dg("\n 1- Consultar Saldo \n 2-Transferir dinheiro \n 3- Consultar dados Pessoais \n 4- Sair da conta \n")
+
+    if (pergunta === "1" || pergunta === "consultar saldo" || pergunta === "saldo") {
+        await consultarSaldo()
+    } else if (pergunta === "2" || pergunta === "transferir dinheiro" || pergunta === "transferir") {
+        await trasnferirDinheiro()
+    } else if (pergunta === "3" || pergunta === "consultar dados" || pergunta === "dados") {
+        await consultarDadosPessoais()
+    }
+    else if (pergunta === "4" || pergunta === "sair") {
+        loggedIn = ""
+        dgValor = ""
+    }
+
+}
+}
 
 
-
+async function consultarSaldo() {
+    console.log(saldo(loggedIn))
+    await dg("\n Pressione ENTER para ir para tela inicial.......")
+}
+async function trasnferirDinheiro() {
+    let transferencia = Number(await dg("Quanto voce deseja tranferir?\n"))
+    let emailEnvio = await dg("Digite o email do detinatario:\n")
+    console.log(transferirDinheiro(loggedIn, emailEnvio, transferencia))
+    await dg("\n Pressione ENTER para ir para tela inicial.......")
+    
+}
+async function consultarDadosPessoais() {
+    console.log(dadosPessoais(loggedIn))
+    await dg("\n Pressione ENTER para ir para tela inicial.......")
 }
