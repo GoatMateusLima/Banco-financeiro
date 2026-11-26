@@ -11,7 +11,7 @@ while (true) {
 
         console.log('--------------Seja bem vindo ao banco central!!!!--------------');
 
-        dgValor = await dg("1 - fazer login | 2 - Criar conta\n");
+        dgValor = await dg("1 - fazer login | 2 - Criar conta\n | 3- Fechar App\n");
 
         if (dgValor === "1" || dgValor === "fazer login" || dgValor === "login") {
             const email = await dg("Digite seu email:");
@@ -61,6 +61,9 @@ while (true) {
             }
 
 
+        } else if (dgValor === "3" || dgValor === "fechar app" || dgValor === "fechar") {
+            console.log("Obrigado por usar o Banco Central!");
+            break;
         } else {
             console.log("Opção inválida!");
             await dg("--------------Pressione ENTER para tentar novamente...--------------");
@@ -74,6 +77,7 @@ while (true) {
         }
         throw erro;
     }
+
 
 
 
@@ -141,7 +145,9 @@ async function Extrato(){
         await dg("Pressione ENTER para voltar para tela inicial")
     }
 
-    if (pergunta === "5" || pergunta === "voltar para tela inicial" || pergunta === "voltar") {}
+    if (pergunta === "5" || pergunta === "voltar para tela inicial" || pergunta === "voltar") {
+        return
+    }
     
     
 }

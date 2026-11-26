@@ -156,7 +156,7 @@ function verExtrato(email: string, tipo: number, periodo: string, id: number) {
             const ano = Number(periodo.slice(4, 8));
             let inicio = new Date(ano, mes -1, dia).getTime()
             let fim = new Date(ano, mes - 1, dia, 23, 59, 59, 999).getTime();
-            result = extrato.filter(u => u.date >= inicio && u.date <= fim)
+            result = extrato.filter(u => u.remetente === user1.id  || u.destinatario === user1.id && u.date >= inicio && u.date <= fim)
         }
 
     }
